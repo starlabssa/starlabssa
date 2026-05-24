@@ -1,167 +1,135 @@
-import Image from "next/image";
-import Link from "next/link";
+import Link from 'next/link';
+import SiteHeader from '@/components/SiteHeader';
 
-export default function About() {
+const PRINCIPLES = [
+  ['Innovation', 'Exploring and developing new technologies that drive progress.'],
+  ['Integration', 'Combining research, design, and industry expertise into one unified process.'],
+  ['Impact', 'Ensuring that every project contributes to a sustainable and intelligent future.'],
+];
+
+export const metadata = {
+  title: 'About — STAR Labs',
+  description: 'Saudi-based innovation and development consultancy advancing science, engineering, and design.',
+};
+
+export default function AboutPage() {
   return (
-    <div style={{
-      backgroundColor: "#ffffff",
-      minHeight: "100vh",
-      color: "#000000"
-    }}>
-      <header style={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between",
-        padding: "1rem 2rem",
-        backgroundColor: "#ffffff",
-        borderBottom: "1px solid #e5e5e5"
-      }}>
-        <div style={{ flexShrink: 0, minWidth: "500px" }}>
-          <Image
-            src="/star-labs-logo.png"
-            alt="StarLabs Logo"
-            width={500}
-            height={200}
-            priority
-            style={{ 
-              objectFit: "contain",
-              width: "500px",
-              height: "200px"
-            }}
-          />
+    <main className="min-h-screen bg-white text-black">
+      <SiteHeader />
+
+      <section className="border-b border-neutral-200">
+        <div className="max-w-6xl mx-auto px-6 lg:px-10 py-20 lg:py-28">
+          <div className="font-mono text-[10px] uppercase tracking-[0.3em] text-[#0a1628] mb-6">
+            About
+          </div>
+          <h1 className="font-serif text-5xl lg:text-7xl text-black leading-[0.95] mb-8 max-w-4xl">
+            Building tomorrow's
+            <br />
+            <em className="text-[#0a1628] not-italic">technologies</em>, today.
+          </h1>
+          <p className="text-neutral-600 text-lg leading-relaxed max-w-2xl">
+            STAR Labs is a Saudi-based innovation and development consultancy dedicated to advancing
+            science, engineering, and design.
+          </p>
         </div>
-        
-        <nav style={{
-          display: "flex",
-          gap: "12px"
-        }}>
-          {[
-            { href: "/", label: "Home" },
-            { href: "/about", label: "About Us" },
-            { href: "/services", label: "Services" },
-            { href: "/energy", label: "Energy" },
-            { href: "/rnd", label: "R&D" },
-            { href: "/blog", label: "Blog" },
-            { href: "/support", label: "Support" }
-          ].map((item) => (
-            <Link key={item.href} href={item.href} style={{
-              backgroundColor: "#0F1C3F",
-              color: "#ffffff",
-              padding: "10px 14px",
-              borderRadius: 8,
-              textDecoration: "none",
-              fontWeight: 600
-            }}>
-              {item.label}
+      </section>
+
+      <section className="border-b border-neutral-200">
+        <div className="max-w-6xl mx-auto px-6 lg:px-10 py-20">
+          <div className="grid grid-cols-1 lg:grid-cols-[1fr_2fr] gap-12 lg:gap-20">
+            <div>
+              <div className="font-mono text-[10px] uppercase tracking-[0.3em] text-[#0a1628] mb-4">
+                Who we are
+              </div>
+              <h2 className="font-serif text-3xl lg:text-4xl text-black leading-tight">
+                Bridging research and practical application.
+              </h2>
+            </div>
+            <div className="space-y-5 text-neutral-700 text-lg leading-relaxed">
+              <p>
+                We specialize in transforming ideas into scalable, real-world technologies. Our
+                mission is simple yet bold: redefine how innovation is approached by learning from
+                the institutions that came before us, and building on their successes with a fresh
+                perspective and renewed purpose.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="border-b border-neutral-200">
+        <div className="max-w-6xl mx-auto px-6 lg:px-10 py-20">
+          <div className="grid grid-cols-1 lg:grid-cols-[1fr_2fr] gap-12 lg:gap-20">
+            <div>
+              <div className="font-mono text-[10px] uppercase tracking-[0.3em] text-[#0a1628] mb-4">
+                Purpose
+              </div>
+              <h2 className="font-serif text-3xl lg:text-4xl text-black leading-tight">
+                A regional hub for innovation and R&amp;D.
+              </h2>
+            </div>
+            <div className="space-y-5 text-neutral-700 text-lg leading-relaxed">
+              <p>
+                We exist to accelerate technological growth in fields that shape the modern world —
+                renewable energy, artificial intelligence, materials science, and digital
+                manufacturing.
+              </p>
+              <p>
+                Through collaboration, strategic partnerships, and forward-thinking development,
+                STAR Labs aims to become the regional hub for innovation and R&amp;D in Saudi Arabia
+                and beyond.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="border-b border-neutral-200">
+        <div className="max-w-6xl mx-auto px-6 lg:px-10 py-20">
+          <div className="flex items-baseline justify-between mb-10">
+            <h2 className="font-serif text-2xl lg:text-3xl text-black">Philosophy &amp; approach</h2>
+            <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-neutral-500">
+              3 principles
+            </span>
+          </div>
+          <p className="text-neutral-700 text-lg leading-relaxed max-w-3xl mb-10">
+            We believe in <em className="text-[#0a1628] not-italic">learning, creating, and
+            advancing for all.</em> Our work is grounded in three principles:
+          </p>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-neutral-200">
+            {PRINCIPLES.map(([title, body], i) => (
+              <div key={title} className="bg-white p-8">
+                <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-neutral-500 mb-3">
+                  {String(i + 1).padStart(2, '0')}
+                </div>
+                <h3 className="font-serif text-2xl text-black mb-3">{title}</h3>
+                <p className="text-neutral-600 text-sm leading-relaxed">{body}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div className="max-w-6xl mx-auto px-6 lg:px-10 py-20">
+          <div className="max-w-3xl">
+            <div className="font-mono text-[10px] uppercase tracking-[0.3em] text-[#0a1628] mb-4">
+              Looking ahead
+            </div>
+            <p className="font-serif text-3xl lg:text-4xl text-black leading-tight mb-10">
+              While today we operate as a consultancy and development firm, our future lies in
+              becoming a full-scale innovation center — combining research, prototyping, and
+              product development under one roof.
+            </p>
+            <Link
+              href="/support"
+              className="inline-block px-6 py-3 bg-black text-white text-xs font-mono uppercase tracking-[0.2em] hover:bg-neutral-800 transition-colors"
+            >
+              Get in touch →
             </Link>
-          ))}
-        </nav>
-      </header>
-
-      <section style={{
-        textAlign: "center",
-        padding: "5rem 0",
-        backgroundColor: "#ffffff",
-        color: "#000000"
-      }}>
-        <h1 style={{
-          fontSize: "3rem",
-          fontWeight: "bold",
-          marginBottom: "1rem"
-        }}>Building Tomorrow's Technologies, Today</h1>
-        <p style={{
-          maxWidth: "32rem",
-          margin: "0 auto 2rem",
-          color: "#4B5563",
-          fontSize: "1.25rem"
-        }}>
-          STAR Labs is a Saudi-based innovation and development consultancy dedicated to advancing science, engineering, and design.
-        </p>
-      </section>
-
-      <section style={{
-        maxWidth: "56rem",
-        margin: "0 auto",
-        padding: "5rem 1rem",
-        color: "#1F2937"
-      }}>
-        <h2 style={{
-          fontSize: "1.875rem",
-          fontWeight: "bold",
-          marginBottom: "1.5rem"
-        }}>Who We Are</h2>
-        <p style={{ marginBottom: "1rem", fontSize: "1.25rem" }}>
-          STAR Labs is a Saudi-based innovation and development consultancy dedicated to advancing science, engineering, and design. 
-          We specialize in bridging the gap between research and practical application — transforming ideas into scalable, real-world technologies.
-        </p>
-        <p style={{ marginBottom: "1.5rem", fontSize: "1.25rem" }}>
-          Our mission is simple yet bold: to redefine how innovation is approached by learning from the institutions that came before us, 
-          and building on their successes with a fresh perspective and renewed purpose.
-        </p>
-
-        <h2 style={{
-          fontSize: "1.875rem",
-          fontWeight: "bold",
-          marginBottom: "1.5rem"
-        }}>Our Purpose</h2>
-        <p style={{ marginBottom: "1.5rem", fontSize: "1.25rem" }}>
-          We exist to accelerate technological growth in fields that shape the modern world — renewable energy, artificial intelligence, 
-          materials science, and digital manufacturing. Through collaboration, strategic partnerships, and forward-thinking development, 
-          STAR Labs aims to become the regional hub for innovation and R&D in Saudi Arabia and beyond.
-        </p>
-
-        <h2 style={{
-          fontSize: "1.875rem",
-          fontWeight: "bold",
-          marginBottom: "1.5rem"
-        }}>Philosophy & Approach</h2>
-        <p style={{ marginBottom: "1rem", fontSize: "1.25rem" }}>
-          At STAR Labs, we believe in <strong>learning, creating, and advancing for all.</strong> Our work is grounded in three principles:
-        </p>
-        <ul style={{
-          listStyleType: "disc",
-          paddingLeft: "1.5rem",
-          marginBottom: "2rem"
-        }}>
-          <li style={{ marginBottom: "0.5rem", fontSize: "1.25rem" }}>
-            <strong>Innovation:</strong> Exploring and developing new technologies that drive progress.
-          </li>
-          <li style={{ marginBottom: "0.5rem", fontSize: "1.25rem" }}>
-            <strong>Integration:</strong> Combining research, design, and industry expertise into one unified process.
-          </li>
-          <li style={{ marginBottom: "0.5rem", fontSize: "1.25rem" }}>
-            <strong>Impact:</strong> Ensuring that every project contributes to a sustainable and intelligent future.
-          </li>
-        </ul>
-        <p style={{ marginBottom: "2rem", fontSize: "1.25rem" }}>
-          We merge creativity with precision, research with execution, and vision with measurable results.
-        </p>
-
-        <h2 style={{
-          fontSize: "1.875rem",
-          fontWeight: "bold",
-          marginBottom: "1.5rem"
-        }}>The Future of STAR Labs</h2>
-        <p style={{ marginBottom: "2rem", fontSize: "1.25rem" }}>
-          While today we operate as a consultancy and development firm, our future lies in becoming a full-scale innovation center — 
-          combining research, prototyping, and product development under one roof. Our goal is to nurture talent, accelerate ideas, 
-          and shape technologies that serve both people and planet.
-        </p>
-
-        <div style={{ textAlign: "center" }}>
-          <Link href="/support" style={{
-            display: "inline-block",
-            padding: "0.75rem 1.5rem",
-            backgroundColor: "#000000",
-            color: "#ffffff",
-            borderRadius: "0.75rem",
-            textDecoration: "none",
-            fontWeight: "600"
-          }}>
-            Get in Touch →
-          </Link>
+          </div>
         </div>
       </section>
-    </div>
-  )
+    </main>
+  );
 }

@@ -1,183 +1,79 @@
-import Image from "next/image";
-import Link from "next/link";
+import SiteHeader from '@/components/SiteHeader';
 
-export default function RND() {
+export const metadata = {
+  title: 'R&D — STAR Labs',
+  description: 'Research and development across AI, robotics, materials, quantum, biotech, and space technology.',
+};
+
+const FIELDS = [
+  ['Artificial Intelligence', 'Advanced AI research including machine learning, computer vision, natural language processing, and autonomous systems for industrial applications.'],
+  ['Biotechnology', 'Synthetic biology, bioengineering, and biomanufacturing technologies for sustainable production and medical applications.'],
+  ['High-G Impact-Resistant Composite Wristwatch', 'Developing a wristwatch case and movement assembly engineered to survive extreme G-forces — fusing aerospace-grade composites with precision horology for tactical and high-performance use.'],
+];
+
+export default function RNDPage() {
   return (
-    <div style={{
-      backgroundColor: "#ffffff",
-      minHeight: "100vh",
-      color: "#000000"
-    }}>
-      <header style={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between",
-        padding: "1rem 2rem",
-        backgroundColor: "#ffffff",
-        borderBottom: "1px solid #e5e5e5"
-      }}>
-        <div style={{ flexShrink: 0, minWidth: "500px" }}>
-          <Image
-            src="/star-labs-logo.png"
-            alt="StarLabs Logo"
-            width={500}
-            height={200}
-            priority
-            style={{ 
-              objectFit: "contain",
-              width: "500px",
-              height: "200px"
-            }}
-          />
-        </div>
-        
-        <nav style={{
-          display: "flex",
-          gap: "12px"
-        }}>
-          {[
-            { href: "/", label: "Home" },
-            { href: "/about", label: "About Us" },
-            { href: "/services", label: "Services" },
-            { href: "/energy", label: "Energy" },
-            { href: "/rnd", label: "R&D" },
-            { href: "/blog", label: "Blog" },
-            { href: "/support", label: "Support" }
-          ].map((item) => (
-            <Link key={item.href} href={item.href} style={{
-              backgroundColor: "#0F1C3F",
-              color: "#ffffff",
-              padding: "10px 14px",
-              borderRadius: 8,
-              textDecoration: "none",
-              fontWeight: 600
-            }}>
-              {item.label}
-            </Link>
-          ))}
-        </nav>
-      </header>
+    <main className="min-h-screen bg-white text-black">
+      <SiteHeader />
 
-      <main style={{
-        padding: "3rem 2rem",
-        maxWidth: "1200px",
-        margin: "0 auto"
-      }}>
-        <h1 style={{ fontSize: "2.5rem", marginBottom: "2rem", textAlign: "center" }}>Research & Development</h1>
-        
-        <div style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
-          gap: "2rem",
-          marginBottom: "3rem"
-        }}>
-          <div style={{
-            padding: "2rem",
-            border: "1px solid #e5e5e5",
-            borderRadius: "8px",
-            backgroundColor: "#fff8f0"
-          }}>
-            <h2>Artificial Intelligence</h2>
-            <p>
-              Advanced AI research including machine learning, computer vision, natural 
-              language processing, and autonomous systems for industrial applications.
-            </p>
+      <section className="border-b border-neutral-200">
+        <div className="max-w-6xl mx-auto px-6 lg:px-10 py-20 lg:py-28">
+          <div className="font-mono text-[10px] uppercase tracking-[0.3em] text-[#0a1628] mb-6">
+            Research &amp; Development
           </div>
-          
-          <div style={{
-            padding: "2rem",
-            border: "1px solid #e5e5e5",
-            borderRadius: "8px",
-            backgroundColor: "#fff8f0"
-          }}>
-            <h2>Robotics & Automation</h2>
-            <p>
-              Cutting-edge robotics research focusing on industrial automation, 
-              service robots, and human-robot collaboration systems.
-            </p>
-          </div>
-          
-          <div style={{
-            padding: "2rem",
-            border: "1px solid #e5e5e5",
-            borderRadius: "8px",
-            backgroundColor: "#fff8f0"
-          }}>
-            <h2>Materials Science</h2>
-            <p>
-              Novel materials development including composites, nanomaterials, 
-              smart materials, and advanced manufacturing processes.
-            </p>
-          </div>
-          
-          <div style={{
-            padding: "2rem",
-            border: "1px solid #e5e5e5",
-            borderRadius: "8px",
-            backgroundColor: "#fff8f0"
-          }}>
-            <h2>Quantum Computing</h2>
-            <p>
-              Quantum algorithms, quantum hardware development, and quantum 
-              communication systems for next-generation computing.
-            </p>
-          </div>
-          
-          <div style={{
-            padding: "2rem",
-            border: "1px solid #e5e5e5",
-            borderRadius: "8px",
-            backgroundColor: "#fff8f0"
-          }}>
-            <h2>Biotechnology</h2>
-            <p>
-              Synthetic biology, bioengineering, and biomanufacturing technologies 
-              for sustainable production and medical applications.
-            </p>
-          </div>
-          
-          <div style={{
-            padding: "2rem",
-            border: "1px solid #e5e5e5",
-            borderRadius: "8px",
-            backgroundColor: "#fff8f0"
-          }}>
-            <h2>Space Technology</h2>
-            <p>
-              Satellite technology, space systems engineering, and space-based 
-              applications for communication and Earth observation.
-            </p>
-          </div>
-        </div>
-
-        <div style={{
-          backgroundColor: "#f9f9f9",
-          padding: "2rem",
-          borderRadius: "8px",
-          marginBottom: "2rem"
-        }}>
-          <h2>Research Facilities</h2>
-          <p>
-            Our state-of-the-art research facilities include advanced laboratories, 
-            clean rooms, testing chambers, and computational resources that enable 
-            cutting-edge research across multiple disciplines.
+          <h1 className="font-serif text-5xl lg:text-7xl text-black leading-[0.95] mb-8 max-w-4xl">
+            Research that
+            <br />
+            <em className="text-[#0a1628] not-italic">becomes</em> technology.
+          </h1>
+          <p className="text-neutral-600 text-lg leading-relaxed max-w-2xl">
+            Focused disciplines, one lab. We pursue the foundational work that turns into the
+            products, tools, and infrastructure of the next decade.
           </p>
         </div>
+      </section>
 
-        <div style={{
-          backgroundColor: "#f0f8ff",
-          padding: "2rem",
-          borderRadius: "8px",
-          textAlign: "center"
-        }}>
-          <h2>Collaboration Opportunities</h2>
-          <p style={{ fontSize: "1.1rem", maxWidth: "800px", margin: "0 auto" }}>
-            We actively collaborate with universities, research institutions, and 
-            industry partners to advance scientific knowledge and develop practical 
-            solutions. Contact us to explore partnership opportunities.
-          </p>
+      <section className="border-b border-neutral-200">
+        <div className="max-w-6xl mx-auto px-6 lg:px-10 py-16">
+          <div className="flex items-baseline justify-between mb-10">
+            <h2 className="font-serif text-2xl lg:text-3xl text-black">Active fields</h2>
+            <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-neutral-500">
+              {FIELDS.length} disciplines
+            </span>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px bg-neutral-200">
+            {FIELDS.map(([title, body], i) => (
+              <div key={title} className="bg-white p-8 min-h-[220px]">
+                <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-neutral-500 mb-3">
+                  Field / {String(i + 1).padStart(2, '0')}
+                </div>
+                <h3 className="font-serif text-2xl text-black mb-3">{title}</h3>
+                <p className="text-neutral-600 text-sm leading-relaxed">{body}</p>
+              </div>
+            ))}
+          </div>
         </div>
-      </main>
-    </div>
-  )
+      </section>
+
+      <section>
+        <div className="max-w-6xl mx-auto px-6 lg:px-10 py-20">
+          <div className="max-w-3xl">
+            <div className="font-mono text-[10px] uppercase tracking-[0.3em] text-[#0a1628] mb-4">
+              Collaboration
+            </div>
+            <p className="font-serif text-3xl lg:text-4xl text-black leading-tight mb-8">
+              We actively collaborate with universities, research institutions, and industry
+              partners to advance scientific knowledge and develop practical solutions.
+            </p>
+            <a
+              href="mailto:starlabs.ksa@gmail.com?subject=Research%20Collaboration%20Inquiry"
+              className="inline-block px-6 py-3 bg-black text-white text-xs font-mono uppercase tracking-[0.2em] hover:bg-neutral-800 transition-colors"
+            >
+              Explore partnership →
+            </a>
+          </div>
+        </div>
+      </section>
+    </main>
+  );
 }

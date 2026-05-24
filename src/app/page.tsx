@@ -1,168 +1,131 @@
-import Image from "next/image";
-import Link from "next/link";
+import Image from 'next/image';
+import Link from 'next/link';
+import SiteHeader from '@/components/SiteHeader';
+
+const FIELDS = [
+  ['Renewable Energy', 'Driving sustainability through smart energy systems and resource optimization.'],
+  ['Artificial Intelligence', 'Developing adaptive algorithms and machine learning solutions for modern industries.'],
+  ['Advanced Materials', 'Exploring high-performance composites, alloys, and sustainable alternatives.'],
+  ['3D Modeling & Manufacturing', 'Integrating precision design with real-world production capabilities.'],
+];
 
 export default function Home() {
   return (
-    <div style={{
-      backgroundColor: "#ffffff",
-      minHeight: "100vh",
-      color: "#000000"
-    }}>
-      <header style={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between",
-        padding: "1rem 2rem",
-        backgroundColor: "#ffffff",
-        borderBottom: "1px solid #e5e5e5"
-      }}>
-        <div style={{ flexShrink: 0, minWidth: "500px" }}>
-          <Image
-            src="/star-labs-logo.png"
-            alt="StarLabs Logo"
-            width={500}
-            height={200}
-            priority
-            style={{ 
-              objectFit: "contain",
-              width: "500px",
-              height: "200px"
-            }}
-          />
+    <main className="min-h-screen bg-white text-black">
+      <SiteHeader />
+
+      <section className="border-b border-neutral-200">
+        <div className="max-w-6xl mx-auto px-6 lg:px-10 py-20 lg:py-28">
+          <div className="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-12 lg:gap-16 items-center">
+            <div>
+              <div className="font-mono text-[10px] uppercase tracking-[0.3em] text-[#0a1628] mb-6">
+                STAR Labs — Saudi Arabia
+              </div>
+              <h1 className="font-serif text-5xl lg:text-7xl text-black leading-[0.95] mb-8 max-w-4xl">
+                Advancement
+                <br />
+                for all,
+                <br />
+                <em className="text-[#0a1628] not-italic">at the frontier</em>
+                <br />
+                of the future.
+              </h1>
+              <p className="text-neutral-600 text-lg leading-relaxed max-w-2xl mb-10">
+                Pioneering innovation across renewable energy, AI, advanced materials, and digital
+                manufacturing.
+              </p>
+              <Link
+                href="/support"
+                className="inline-block px-6 py-3 bg-black text-white text-xs font-mono uppercase tracking-[0.2em] hover:bg-neutral-800 transition-colors"
+              >
+                Get in touch
+              </Link>
+            </div>
+            <div className="flex lg:justify-end">
+              <Image
+                src="/star-labs-logo.png"
+                alt="STAR Labs"
+                width={500}
+                height={200}
+                priority
+                className="w-full max-w-xs lg:max-w-sm h-auto object-contain"
+              />
+            </div>
+          </div>
         </div>
-        
-        <nav style={{
-          display: "flex",
-          gap: "12px"
-        }}>
-          {[
-            { href: "/", label: "Home" },
-            { href: "/about", label: "About Us" },
-            { href: "/services", label: "Services" },
-            { href: "/energy", label: "Energy" },
-            { href: "/rnd", label: "R&D" },
-            { href: "/blog", label: "Blog" },
-            { href: "/support", label: "Support" }
-          ].map((item) => (
-            <Link key={item.href} href={item.href} style={{
-              backgroundColor: "#0F1C3F",
-              color: "#ffffff",
-              padding: "10px 14px",
-              borderRadius: 8,
-              textDecoration: "none",
-              fontWeight: 600
-            }}>
-              {item.label}
+      </section>
+
+      <section className="border-b border-neutral-200">
+        <div className="max-w-6xl mx-auto px-6 lg:px-10 py-20">
+          <div className="grid grid-cols-1 lg:grid-cols-[1fr_2fr] gap-12 lg:gap-20">
+            <div>
+              <div className="font-mono text-[10px] uppercase tracking-[0.3em] text-[#0a1628] mb-4">
+                About
+              </div>
+              <h2 className="font-serif text-3xl lg:text-4xl text-black leading-tight">
+                A Saudi consultancy and development lab building the foundation for tomorrow's
+                technologies.
+              </h2>
+            </div>
+            <div className="space-y-5 text-neutral-700 text-lg leading-relaxed">
+              <p>
+                STAR Labs is a Saudi-based consultancy and development lab focused on building the
+                foundation for tomorrow's technologies. We bridge visionary ideas and practical
+                engineering — a hub for future innovation and research.
+              </p>
+              <p>
+                Our mission is to empower industries through intelligent design, sustainable
+                solutions, and technological excellence. By learning from the successes and
+                limitations of past institutions, STAR Labs redefines how innovation is discovered,
+                shared, and scaled.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="border-b border-neutral-200">
+        <div className="max-w-6xl mx-auto px-6 lg:px-10 py-20">
+          <div className="flex items-baseline justify-between mb-10">
+            <h2 className="font-serif text-2xl lg:text-3xl text-black">Fields of expertise</h2>
+            <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-neutral-500">
+              {FIELDS.length} disciplines
+            </span>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-neutral-200">
+            {FIELDS.map(([title, body]) => (
+              <div key={title} className="bg-white p-8">
+                <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-neutral-500 mb-3">
+                  Discipline
+                </div>
+                <h3 className="font-serif text-2xl text-black mb-3">{title}</h3>
+                <p className="text-neutral-600 text-sm leading-relaxed">{body}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div className="max-w-6xl mx-auto px-6 lg:px-10 py-20">
+          <div className="max-w-3xl">
+            <div className="font-mono text-[10px] uppercase tracking-[0.3em] text-[#0a1628] mb-4">
+              Vision
+            </div>
+            <p className="font-serif text-3xl lg:text-4xl text-black leading-tight mb-10">
+              Innovation should be accessible, impactful, and collaborative — uniting research,
+              creativity, and engineering to shape a future where technology advances humanity as a
+              whole.
+            </p>
+            <Link
+              href="/support"
+              className="inline-block px-6 py-3 bg-black text-white text-xs font-mono uppercase tracking-[0.2em] hover:bg-neutral-800 transition-colors"
+            >
+              Get in touch →
             </Link>
-          ))}
-        </nav>
-      </header>
-
-      <section style={{
-        textAlign: "center",
-        padding: "5rem 0",
-        backgroundColor: "#ffffff",
-        color: "#000000"
-      }}>
-        <h1 style={{
-          fontSize: "3rem",
-          fontWeight: "bold",
-          marginBottom: "1rem"
-        }}>Advancement for All</h1>
-        <h2 style={{
-          fontSize: "1.5rem",
-          marginBottom: "1.5rem",
-          color: "#374151"
-        }}>At the Frontier of the Future</h2>
-        <p style={{
-          maxWidth: "32rem",
-          margin: "0 auto 2rem",
-          color: "#4B5563",
-          fontSize: "1.25rem"
-        }}>
-          Pioneering innovation across renewable energy, AI, advanced materials, and digital manufacturing.
-        </p>
-        <Link href="/support" style={{
-          display: "inline-block",
-          padding: "0.75rem 1.5rem",
-          backgroundColor: "#000000",
-          color: "#ffffff",
-          borderRadius: "0.75rem",
-          textDecoration: "none",
-          fontWeight: "600"
-        }}>
-          Get in Touch
-        </Link>
-      </section>
-
-      <section style={{
-        maxWidth: "56rem",
-        margin: "0 auto",
-        padding: "5rem 1rem",
-        color: "#1F2937"
-      }}>
-        <h2 style={{
-          fontSize: "1.875rem",
-          fontWeight: "bold",
-          marginBottom: "1.5rem"
-        }}>About STAR Labs</h2>
-        <p style={{ marginBottom: "1rem", fontSize: "1.25rem" }}>
-          STAR Labs is a Saudi-based consultancy and development lab focused on building the foundation for tomorrow's technologies. 
-          We are committed to creating a hub for future innovation and research — bridging the gap between visionary ideas and practical engineering.
-        </p>
-        <p style={{ marginBottom: "1.5rem", fontSize: "1.25rem" }}>
-          Our mission is to empower industries through intelligent design, sustainable solutions, and technological excellence. 
-          By learning from the successes and limitations of past and current institutions, STAR Labs redefines how innovation is discovered, shared, and scaled.
-        </p>
-
-        <h3 style={{
-          fontSize: "1.5rem",
-          fontWeight: "600",
-          marginBottom: "1rem"
-        }}>Fields of Expertise</h3>
-        <ul style={{
-          listStyleType: "disc",
-          paddingLeft: "1.5rem",
-          marginBottom: "2rem"
-        }}>
-          <li style={{ marginBottom: "0.5rem", fontSize: "1.25rem" }}>
-            <strong>Renewable Energy:</strong> Driving sustainability through smart energy systems and resource optimization.
-          </li>
-          <li style={{ marginBottom: "0.5rem", fontSize: "1.25rem" }}>
-            <strong>Artificial Intelligence:</strong> Developing adaptive algorithms and machine learning solutions for modern industries.
-          </li>
-          <li style={{ marginBottom: "0.5rem", fontSize: "1.25rem" }}>
-            <strong>Advanced Materials:</strong> Exploring high-performance composites, alloys, and sustainable alternatives.
-          </li>
-          <li style={{ marginBottom: "0.5rem", fontSize: "1.25rem" }}>
-            <strong>3D Modeling & Manufacturing:</strong> Integrating precision design with real-world production capabilities.
-          </li>
-        </ul>
-
-        <h3 style={{
-          fontSize: "1.5rem",
-          fontWeight: "600",
-          marginBottom: "1rem"
-        }}>Vision Statement</h3>
-        <p style={{ marginBottom: "2rem", fontSize: "1.25rem" }}>
-          At STAR Labs, we believe innovation should be accessible, impactful, and collaborative. 
-          Our vision is to unite research, creativity, and practical engineering — shaping a future where technology advances humanity as a whole.
-        </p>
-
-        <div style={{ textAlign: "center" }}>
-          <Link href="/support" style={{
-            display: "inline-block",
-            padding: "0.75rem 1.5rem",
-            backgroundColor: "#000000",
-            color: "#ffffff",
-            borderRadius: "0.75rem",
-            textDecoration: "none",
-            fontWeight: "600"
-          }}>
-            Get in Touch →
-          </Link>
+          </div>
         </div>
       </section>
-    </div>
-  )
+    </main>
+  );
 }

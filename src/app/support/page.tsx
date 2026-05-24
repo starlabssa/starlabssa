@@ -1,107 +1,78 @@
-import Link from "next/link";
+import SiteHeader from '@/components/SiteHeader';
 
 export const metadata = {
-  title: "Support | STAR Labs",
-  description: "Contact STAR Labs for all inquiries, collaborations, or service requests.",
+  title: 'Support — STAR Labs',
+  description: 'Contact STAR Labs for all inquiries, collaborations, or service requests.',
 };
 
 export default function SupportPage() {
   return (
-    <div style={{
-      backgroundColor: "#ffffff",
-      minHeight: "100vh",
-      color: "#000000"
-    }}>
-      <header style={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between",
-        padding: "1rem 2rem",
-        backgroundColor: "#ffffff",
-        borderBottom: "1px solid #e5e5e5"
-      }}>
-        <div style={{ flexShrink: 0, minWidth: "500px" }}>
-          <img
-            src="/star-labs-logo.png"
-            alt="StarLabs Logo"
-            width={500}
-            height={200}
-            style={{ 
-              objectFit: "contain",
-              width: "500px",
-              height: "200px"
-            }}
-          />
+    <main className="min-h-screen bg-white text-black">
+      <SiteHeader />
+
+      <section className="border-b border-neutral-200">
+        <div className="max-w-6xl mx-auto px-6 lg:px-10 py-20 lg:py-28">
+          <div className="font-mono text-[10px] uppercase tracking-[0.3em] text-[#0a1628] mb-6">
+            Support
+          </div>
+          <h1 className="font-serif text-5xl lg:text-7xl text-black leading-[0.95] mb-8 max-w-4xl">
+            Let's <em className="text-[#0a1628] not-italic">talk</em>.
+          </h1>
+          <p className="text-neutral-600 text-lg leading-relaxed max-w-2xl">
+            For all inquiries, collaborations, or service requests, reach out by email. We aim to
+            respond within 1–2 business days.
+          </p>
         </div>
-        
-        <nav style={{
-          display: "flex",
-          gap: "12px"
-        }}>
-          {[
-            { href: "/", label: "Home" },
-            { href: "/about", label: "About Us" },
-            { href: "/services", label: "Services" },
-            { href: "/energy", label: "Energy" },
-            { href: "/rnd", label: "R&D" },
-            { href: "/blog", label: "Blog" },
-            { href: "/support", label: "Support" }
-          ].map((item) => (
-            <Link key={item.href} href={item.href} style={{
-              backgroundColor: "#001f3f",
-              color: "#ffffff",
-              padding: "10px 14px",
-              borderRadius: 8,
-              textDecoration: "none",
-              fontWeight: 600
-            }}>
-              {item.label}
-            </Link>
-          ))}
-        </nav>
-      </header>
-
-      <section style={{
-        textAlign: "center",
-        padding: "8rem 0"
-      }}>
-        <h1 style={{
-          fontSize: "3rem",
-          fontWeight: "bold",
-          marginBottom: "1.5rem"
-        }}>Support</h1>
-        <p style={{
-          fontSize: "1.125rem",
-          color: "#374151",
-          marginBottom: "2.5rem"
-        }}>
-          For all inquiries, collaborations, or service requests, please contact us at:
-        </p>
-
-        <a
-          href="mailto:starlabs.ksa@gmail.com"
-          style={{
-            display: "inline-block",
-            padding: "1rem 2rem",
-            borderRadius: "0.75rem",
-            backgroundColor: "#001f3f",
-            color: "#ffffff",
-            fontSize: "1.125rem",
-            fontWeight: "500",
-            textDecoration: "none"
-          }}
-        >
-          starlabs.ksa@gmail.com
-        </a>
-
-        <p style={{
-          marginTop: "2.5rem",
-          color: "#6b7280",
-          fontSize: "0.875rem"
-        }}>
-          We aim to respond to all emails within 1–2 business days.
-        </p>
       </section>
-    </div>
+
+      <section>
+        <div className="max-w-6xl mx-auto px-6 lg:px-10 py-20">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20">
+            <div>
+              <div className="font-mono text-[10px] uppercase tracking-[0.3em] text-[#0a1628] mb-4">
+                Email
+              </div>
+              <a
+                href="mailto:starlabs.ksa@gmail.com"
+                className="font-serif text-2xl lg:text-3xl text-black hover:text-[#0a1628] transition-colors break-all"
+              >
+                starlabs.ksa@gmail.com
+              </a>
+              <p className="text-neutral-600 text-sm mt-4 leading-relaxed">
+                The fastest way to reach us. Include your project context, files, and any deadlines.
+              </p>
+            </div>
+
+            <div>
+              <div className="font-mono text-[10px] uppercase tracking-[0.3em] text-[#0a1628] mb-4">
+                Inquiries we welcome
+              </div>
+              <ul className="space-y-3 text-neutral-700">
+                <li className="pl-4 relative">
+                  <span className="absolute left-0 top-3 w-2 h-px bg-[#0a1628]" />
+                  3D modeling and CAD consultancy requests
+                </li>
+                <li className="pl-4 relative">
+                  <span className="absolute left-0 top-3 w-2 h-px bg-[#0a1628]" />
+                  Rapid prototyping and printing quotes
+                </li>
+                <li className="pl-4 relative">
+                  <span className="absolute left-0 top-3 w-2 h-px bg-[#0a1628]" />
+                  Research and collaboration proposals
+                </li>
+                <li className="pl-4 relative">
+                  <span className="absolute left-0 top-3 w-2 h-px bg-[#0a1628]" />
+                  Partnership and contractor opportunities
+                </li>
+                <li className="pl-4 relative">
+                  <span className="absolute left-0 top-3 w-2 h-px bg-[#0a1628]" />
+                  Press, speaking, and media requests
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
   );
 }
