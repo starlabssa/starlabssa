@@ -1,0 +1,24 @@
+<svg width="300" height="120" viewBox="0 0 300 120" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .logo-text { font-family: Arial, sans-serif; font-weight: bold; fill: white; }
+      .tagline-text { font-family: Arial, sans-serif; font-weight: normal; fill: white; }
+    </style>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="300" height="120" fill="#0F1C3F"/>
+  
+  <!-- Star Icon -->
+  <g transform="translate(20, 60)">
+    <polygon points="0,-25 7,-7 25,-7 12,5 20,25 0,15 -20,25 -12,5 -25,-7 -7,-7" fill="white"/>
+  </g>
+  
+  <!-- STAR Labs Text -->
+  <text x="80" y="45" class="logo-text" font-size="28">STAR</text>
+  <text x="80" y="70" class="logo-text" font-size="28">Labs</text>
+  
+  <!-- Tagline -->
+  <text x="80" y="90" class="tagline-text" font-size="10">SAUDI TECHNOLOGICAL and ADVANCED</text>
+  <text x="80" y="105" class="tagline-text" font-size="10">RESEARCH LABORATORIES</text>
+</svg>

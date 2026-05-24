@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 
-export default function Home() {
+export default function About() {
   return (
     <div style={{
       backgroundColor: "#ffffff",
@@ -68,31 +68,15 @@ export default function Home() {
           fontSize: "3rem",
           fontWeight: "bold",
           marginBottom: "1rem"
-        }}>Advancement for All</h1>
-        <h2 style={{
-          fontSize: "1.5rem",
-          marginBottom: "1.5rem",
-          color: "#374151"
-        }}>At the Frontier of the Future</h2>
+        }}>Building Tomorrow's Technologies, Today</h1>
         <p style={{
           maxWidth: "32rem",
           margin: "0 auto 2rem",
           color: "#4B5563",
           fontSize: "1.25rem"
         }}>
-          Pioneering innovation across renewable energy, AI, advanced materials, and digital manufacturing.
+          STAR Labs is a Saudi-based innovation and development consultancy dedicated to advancing science, engineering, and design.
         </p>
-        <Link href="/support" style={{
-          display: "inline-block",
-          padding: "0.75rem 1.5rem",
-          backgroundColor: "#000000",
-          color: "#ffffff",
-          borderRadius: "0.75rem",
-          textDecoration: "none",
-          fontWeight: "600"
-        }}>
-          Get in Touch
-        </Link>
       </section>
 
       <section style={{
@@ -105,48 +89,63 @@ export default function Home() {
           fontSize: "1.875rem",
           fontWeight: "bold",
           marginBottom: "1.5rem"
-        }}>About STAR Labs</h2>
+        }}>Who We Are</h2>
         <p style={{ marginBottom: "1rem", fontSize: "1.25rem" }}>
-          STAR Labs is a Saudi-based consultancy and development lab focused on building the foundation for tomorrow's technologies. 
-          We are committed to creating a hub for future innovation and research — bridging the gap between visionary ideas and practical engineering.
+          STAR Labs is a Saudi-based innovation and development consultancy dedicated to advancing science, engineering, and design. 
+          We specialize in bridging the gap between research and practical application — transforming ideas into scalable, real-world technologies.
         </p>
         <p style={{ marginBottom: "1.5rem", fontSize: "1.25rem" }}>
-          Our mission is to empower industries through intelligent design, sustainable solutions, and technological excellence. 
-          By learning from the successes and limitations of past and current institutions, STAR Labs redefines how innovation is discovered, shared, and scaled.
+          Our mission is simple yet bold: to redefine how innovation is approached by learning from the institutions that came before us, 
+          and building on their successes with a fresh perspective and renewed purpose.
         </p>
 
-        <h3 style={{
-          fontSize: "1.5rem",
-          fontWeight: "600",
-          marginBottom: "1rem"
-        }}>Fields of Expertise</h3>
+        <h2 style={{
+          fontSize: "1.875rem",
+          fontWeight: "bold",
+          marginBottom: "1.5rem"
+        }}>Our Purpose</h2>
+        <p style={{ marginBottom: "1.5rem", fontSize: "1.25rem" }}>
+          We exist to accelerate technological growth in fields that shape the modern world — renewable energy, artificial intelligence, 
+          materials science, and digital manufacturing. Through collaboration, strategic partnerships, and forward-thinking development, 
+          STAR Labs aims to become the regional hub for innovation and R&D in Saudi Arabia and beyond.
+        </p>
+
+        <h2 style={{
+          fontSize: "1.875rem",
+          fontWeight: "bold",
+          marginBottom: "1.5rem"
+        }}>Philosophy & Approach</h2>
+        <p style={{ marginBottom: "1rem", fontSize: "1.25rem" }}>
+          At STAR Labs, we believe in <strong>learning, creating, and advancing for all.</strong> Our work is grounded in three principles:
+        </p>
         <ul style={{
           listStyleType: "disc",
           paddingLeft: "1.5rem",
           marginBottom: "2rem"
         }}>
           <li style={{ marginBottom: "0.5rem", fontSize: "1.25rem" }}>
-            <strong>Renewable Energy:</strong> Driving sustainability through smart energy systems and resource optimization.
+            <strong>Innovation:</strong> Exploring and developing new technologies that drive progress.
           </li>
           <li style={{ marginBottom: "0.5rem", fontSize: "1.25rem" }}>
-            <strong>Artificial Intelligence:</strong> Developing adaptive algorithms and machine learning solutions for modern industries.
+            <strong>Integration:</strong> Combining research, design, and industry expertise into one unified process.
           </li>
           <li style={{ marginBottom: "0.5rem", fontSize: "1.25rem" }}>
-            <strong>Advanced Materials:</strong> Exploring high-performance composites, alloys, and sustainable alternatives.
-          </li>
-          <li style={{ marginBottom: "0.5rem", fontSize: "1.25rem" }}>
-            <strong>3D Modeling & Manufacturing:</strong> Integrating precision design with real-world production capabilities.
+            <strong>Impact:</strong> Ensuring that every project contributes to a sustainable and intelligent future.
           </li>
         </ul>
-
-        <h3 style={{
-          fontSize: "1.5rem",
-          fontWeight: "600",
-          marginBottom: "1rem"
-        }}>Vision Statement</h3>
         <p style={{ marginBottom: "2rem", fontSize: "1.25rem" }}>
-          At STAR Labs, we believe innovation should be accessible, impactful, and collaborative. 
-          Our vision is to unite research, creativity, and practical engineering — shaping a future where technology advances humanity as a whole.
+          We merge creativity with precision, research with execution, and vision with measurable results.
+        </p>
+
+        <h2 style={{
+          fontSize: "1.875rem",
+          fontWeight: "bold",
+          marginBottom: "1.5rem"
+        }}>The Future of STAR Labs</h2>
+        <p style={{ marginBottom: "2rem", fontSize: "1.25rem" }}>
+          While today we operate as a consultancy and development firm, our future lies in becoming a full-scale innovation center — 
+          combining research, prototyping, and product development under one roof. Our goal is to nurture talent, accelerate ideas, 
+          and shape technologies that serve both people and planet.
         </p>
 
         <div style={{ textAlign: "center" }}>
