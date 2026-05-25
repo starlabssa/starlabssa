@@ -5,6 +5,15 @@ import remarkGfm from 'remark-gfm';
 import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
 
+// DeepSeek (and most LaTeX-trained models) emit math with backslashed
+// delimiters: \( ... \) for inline and \[ ... \] for display.
+// remark-math only recognizes $...$ / $$...$$, so we normalize here.
+function normalizeMathDelimiters(content: string): string {
+  return content
+    .replace(/\\\[([\s\S]*?)\\\]/g, (_, inner) => `$$${inner}$$`)
+    .replace(/\\\(([\s\S]*?)\\\)/g, (_, inner) => `$${inner}$`);
+}
+
 export default function TutorMarkdown({ content }: { content: string }) {
   return (
     <ReactMarkdown
@@ -87,7 +96,7 @@ export default function TutorMarkdown({ content }: { content: string }) {
         hr: () => <hr className="border-neutral-200 my-4" />,
       }}
     >
-      {content}
+      {normalizeMathDelimiters(content)}
     </ReactMarkdown>
   );
 }
