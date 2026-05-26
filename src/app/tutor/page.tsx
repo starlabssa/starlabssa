@@ -5,6 +5,7 @@ import {
   useState,
   useRef,
   useEffect,
+  type ChangeEvent,
   type FormEvent,
   type RefObject,
 } from 'react';
@@ -13,7 +14,34 @@ import SiteHeader from '@/components/SiteHeader';
 import TutorMarkdown from '@/components/TutorMarkdown';
 import { MAJORS, type Major } from '@/lib/tutor-personalities';
 
-type ChatMessage = { role: 'user' | 'assistant'; content: string };
+type ChatMessage = {
+  role: 'user' | 'assistant';
+  content: string;
+  imageUrl?: string; // session-only preview; never persisted, never round-tripped
+};
+
+type AttachedImage = {
+  file: File;
+  previewUrl: string;
+  dataBase64: string;
+  mimeType: 'image/jpeg' | 'image/png' | 'image/webp';
+};
+
+const ACCEPTED_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp'] as const;
+const MAX_IMAGE_BYTES = 10 * 1024 * 1024;
+
+function fileToBase64(file: File): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onerror = () => reject(reader.error);
+    reader.onload = () => {
+      const result = reader.result as string;
+      const comma = result.indexOf(',');
+      resolve(comma >= 0 ? result.slice(comma + 1) : result);
+    };
+    reader.readAsDataURL(file);
+  });
+}
 
 type ConversationSummary = {
   id: string;
@@ -64,8 +92,52 @@ export default function TutorPage() {
   const [conversations, setConversations] = useState<ConversationSummary[]>([]);
   const [loadingConversation, setLoadingConversation] = useState(false);
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
+  const [attachedImage, setAttachedImage] = useState<AttachedImage | null>(null);
   const abortRef = useRef<AbortController | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  async function handleAttachImage(e: ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    e.target.value = ''; // allow re-selecting the same file later
+    if (!file) return;
+    const isAccepted = (ACCEPTED_IMAGE_TYPES as readonly string[]).includes(file.type);
+    if (!isAccepted) {
+      setError({
+        kind: 'general',
+        message: 'Please attach a JPEG, PNG, or WebP image.',
+      });
+      return;
+    }
+    if (file.size > MAX_IMAGE_BYTES) {
+      setError({
+        kind: 'general',
+        message: 'Image is too large. Please use an image under 10 MB.',
+      });
+      return;
+    }
+    try {
+      const dataBase64 = await fileToBase64(file);
+      if (attachedImage) URL.revokeObjectURL(attachedImage.previewUrl);
+      setAttachedImage({
+        file,
+        previewUrl: URL.createObjectURL(file),
+        dataBase64,
+        mimeType: file.type as AttachedImage['mimeType'],
+      });
+      setError(null);
+    } catch {
+      setError({
+        kind: 'general',
+        message: 'Could not read that image. Try a different file.',
+      });
+    }
+  }
+
+  function clearAttachedImage() {
+    if (attachedImage) URL.revokeObjectURL(attachedImage.previewUrl);
+    setAttachedImage(null);
+  }
 
   // Fetch conversation list once on mount. If 401, silently ignore.
   useEffect(() => {
@@ -96,6 +168,8 @@ export default function TutorPage() {
     setInput('');
     setStreaming(false);
     setError(null);
+    if (attachedImage) URL.revokeObjectURL(attachedImage.previewUrl);
+    setAttachedImage(null);
     setMobileSidebarOpen(false);
   }
 
@@ -106,6 +180,8 @@ export default function TutorPage() {
     setInput('');
     setStreaming(false);
     setError(null);
+    if (attachedImage) URL.revokeObjectURL(attachedImage.previewUrl);
+    setAttachedImage(null);
     setMobileSidebarOpen(false);
   }
 
@@ -160,12 +236,18 @@ export default function TutorPage() {
 
   async function sendMessage(e: FormEvent) {
     e.preventDefault();
-    if (!major || !input.trim() || streaming) return;
+    if (!major || (!input.trim() && !attachedImage) || streaming) return;
 
-    const userMsg: ChatMessage = { role: 'user', content: input.trim() };
+    const currentImage = attachedImage;
+    const userMsg: ChatMessage = {
+      role: 'user',
+      content: input.trim(),
+      imageUrl: currentImage?.previewUrl,
+    };
     const outgoing = [...messages, userMsg];
     setMessages(outgoing);
     setInput('');
+    setAttachedImage(null); // keep the object URL alive — the bubble references it
     setError(null);
     setStreaming(true);
     setMessages((m) => [...m, { role: 'assistant', content: '' }]);
@@ -178,7 +260,19 @@ export default function TutorPage() {
       const res = await fetch('/api/tutor', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ major, conversationId, messages: outgoing }),
+        body: JSON.stringify({
+          major,
+          conversationId,
+          messages: outgoing.map((m) => ({ role: m.role, content: m.content })),
+          ...(currentImage
+            ? {
+                image: {
+                  mimeType: currentImage.mimeType,
+                  dataBase64: currentImage.dataBase64,
+                },
+              }
+            : {}),
+        }),
         signal: ctrl.signal,
       });
 
@@ -204,8 +298,7 @@ export default function TutorPage() {
           const newConv: ConversationSummary = {
             id: returnedConvId,
             major,
-            title: userMsg.content
-              .trim()
+            title: (userMsg.content.trim() || '[Image attached]')
               .split(/\s+/)
               .slice(0, 6)
               .join(' ')
@@ -306,6 +399,10 @@ export default function TutorPage() {
           onLoadConversation={loadConversation}
           onDeleteConversation={deleteConversation}
           scrollRef={scrollRef}
+          attachedImage={attachedImage}
+          fileInputRef={fileInputRef}
+          onAttachImage={handleAttachImage}
+          onClearAttachedImage={clearAttachedImage}
         />
       )}
     </main>
@@ -392,6 +489,10 @@ function ChatScreen({
   onLoadConversation,
   onDeleteConversation,
   scrollRef,
+  attachedImage,
+  fileInputRef,
+  onAttachImage,
+  onClearAttachedImage,
 }: {
   major: Major;
   conversationId: string | null;
@@ -410,6 +511,10 @@ function ChatScreen({
   onLoadConversation: (c: ConversationSummary) => void;
   onDeleteConversation: (id: string) => void;
   scrollRef: RefObject<HTMLDivElement | null>;
+  attachedImage: AttachedImage | null;
+  fileInputRef: RefObject<HTMLInputElement | null>;
+  onAttachImage: (e: ChangeEvent<HTMLInputElement>) => void;
+  onClearAttachedImage: () => void;
 }) {
   return (
     <section className="flex-1 flex min-h-0">
@@ -490,9 +595,20 @@ function ChatScreen({
                     {m.role === 'user' ? 'You' : 'Tutor'}
                   </div>
                   {m.role === 'user' ? (
-                    <div className="whitespace-pre-wrap leading-relaxed text-[15px]">
-                      {m.content}
-                    </div>
+                    <>
+                      {m.imageUrl && (
+                        <img
+                          src={m.imageUrl}
+                          alt="Attached"
+                          className="max-w-full max-h-80 mb-2 rounded-lg object-contain bg-black/10"
+                        />
+                      )}
+                      {m.content && (
+                        <div className="whitespace-pre-wrap leading-relaxed text-[15px]">
+                          {m.content}
+                        </div>
+                      )}
+                    </>
                   ) : (
                     <div className="text-[15px]">
                       {m.content ? (
@@ -535,22 +651,61 @@ function ChatScreen({
         </div>
 
         <form onSubmit={onSubmit} className="border-t border-neutral-200 bg-white">
-          <div className="max-w-3xl mx-auto px-6 lg:px-10 py-5 flex gap-3">
-            <input
-              type="text"
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              placeholder="Ask the tutor…"
-              disabled={streaming || loadingConversation}
-              className="flex-1 border border-neutral-300 px-4 py-3 text-black placeholder-neutral-400 focus:outline-none focus:border-[#0a1628] disabled:bg-neutral-100 disabled:cursor-not-allowed"
-            />
-            <button
-              type="submit"
-              disabled={streaming || loadingConversation || !input.trim()}
-              className="bg-[#0a1628] text-white font-mono text-[10px] uppercase tracking-[0.2em] px-6 py-3 hover:opacity-90 transition disabled:opacity-40 disabled:cursor-not-allowed"
-            >
-              {streaming ? 'Sending…' : 'Send'}
-            </button>
+          <div className="max-w-3xl mx-auto px-6 lg:px-10 py-5">
+            {attachedImage && (
+              <div className="mb-3 flex items-center gap-3 border border-neutral-200 bg-neutral-50 px-3 py-2 w-fit max-w-full">
+                <img
+                  src={attachedImage.previewUrl}
+                  alt="Attachment preview"
+                  className="h-12 w-12 object-cover"
+                />
+                <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-neutral-600 truncate max-w-[200px]">
+                  {attachedImage.file.name}
+                </span>
+                <button
+                  type="button"
+                  onClick={onClearAttachedImage}
+                  aria-label="Remove image"
+                  className="font-mono text-[14px] leading-none text-neutral-500 hover:text-[#0a1628] px-1"
+                >
+                  ×
+                </button>
+              </div>
+            )}
+            <div className="flex gap-3">
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/jpeg,image/png,image/webp"
+                onChange={onAttachImage}
+                className="hidden"
+              />
+              <button
+                type="button"
+                onClick={() => fileInputRef.current?.click()}
+                disabled={streaming || loadingConversation}
+                aria-label="Attach image"
+                title="Attach an image"
+                className="border border-neutral-300 px-3 py-3 text-neutral-600 hover:text-[#0a1628] hover:border-[#0a1628] transition disabled:opacity-40 disabled:cursor-not-allowed font-mono text-[10px] uppercase tracking-[0.2em] shrink-0"
+              >
+                + Image
+              </button>
+              <input
+                type="text"
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                placeholder={attachedImage ? 'Add a question (optional)…' : 'Ask the tutor…'}
+                disabled={streaming || loadingConversation}
+                className="flex-1 border border-neutral-300 px-4 py-3 text-black placeholder-neutral-400 focus:outline-none focus:border-[#0a1628] disabled:bg-neutral-100 disabled:cursor-not-allowed"
+              />
+              <button
+                type="submit"
+                disabled={streaming || loadingConversation || (!input.trim() && !attachedImage)}
+                className="bg-[#0a1628] text-white font-mono text-[10px] uppercase tracking-[0.2em] px-6 py-3 hover:opacity-90 transition disabled:opacity-40 disabled:cursor-not-allowed"
+              >
+                {streaming ? 'Sending…' : 'Send'}
+              </button>
+            </div>
           </div>
         </form>
       </div>

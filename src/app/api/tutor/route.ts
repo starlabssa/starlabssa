@@ -4,6 +4,14 @@ import { z } from "zod";
 import { MAJORS, TUTOR_PERSONALITIES } from "@/lib/tutor-personalities";
 import { supabaseAdmin } from "@/lib/supabase-admin";
 import { getOrCreateProfile } from "@/lib/profile";
+import {
+  transcribeImage,
+  GeminiVisionError,
+  SUPPORTED_IMAGE_MIME_TYPES,
+  type SupportedImageMimeType,
+} from "@/lib/gemini-vision";
+
+const MAX_IMAGE_BYTES = 10 * 1024 * 1024; // 10MB
 
 const AI_PROVIDER = {
   baseUrl: "https://api.deepseek.com",
@@ -22,6 +30,12 @@ const RequestSchema = z.object({
       })
     )
     .min(1),
+  image: z
+    .object({
+      mimeType: z.enum(SUPPORTED_IMAGE_MIME_TYPES),
+      dataBase64: z.string().min(1),
+    })
+    .optional(),
 });
 
 function titleFromFirstMessage(content: string): string {
@@ -69,6 +83,47 @@ export async function POST(req: NextRequest) {
     );
   }
 
+  // If an image was attached, validate size server-side and run vision transcription.
+  // On success we splice the description into the last user message ONLY for the
+  // upstream DeepSeek call — the message we persist to the DB stays as the user
+  // typed it (or "[Image attached]" if empty).
+  let imageDescription: string | null = null;
+  if (parsed.data.image) {
+    const approxBytes = Math.floor((parsed.data.image.dataBase64.length * 3) / 4);
+    if (approxBytes > MAX_IMAGE_BYTES) {
+      return Response.json(
+        { error: "Image is too large. Please use an image under 10 MB." },
+        { status: 413 }
+      );
+    }
+    try {
+      imageDescription = await transcribeImage({
+        dataBase64: parsed.data.image.dataBase64,
+        mimeType: parsed.data.image.mimeType as SupportedImageMimeType,
+        userText: lastMessage.content,
+        major,
+      });
+    } catch (err) {
+      const detail =
+        err instanceof GeminiVisionError ? err.detail ?? err.message : String(err);
+      console.error("[tutor] gemini-vision failed:", detail);
+      return Response.json(
+        {
+          error:
+            "Couldn't read your image. Try a clearer photo, or send the question as text.",
+        },
+        { status: 502 }
+      );
+    }
+  }
+
+  // If the user attached an image but typed no text, store a placeholder so the
+  // DB row isn't empty. The DeepSeek call always uses the spliced version below.
+  const persistedUserContent =
+    parsed.data.image && lastMessage.content.trim().length === 0
+      ? "[Image attached]"
+      : lastMessage.content;
+
   // New conversation: ensure profile + create row
   if (!conversationId) {
     await getOrCreateProfile();
@@ -77,7 +132,7 @@ export async function POST(req: NextRequest) {
       .insert({
         clerk_user_id: userId,
         major,
-        title: titleFromFirstMessage(lastMessage.content),
+        title: titleFromFirstMessage(persistedUserContent),
       })
       .select("id")
       .single();
@@ -115,7 +170,7 @@ export async function POST(req: NextRequest) {
   const { error: insUserErr } = await supabaseAdmin.from("messages").insert({
     conversation_id: finalConversationId,
     role: "user",
-    content: lastMessage.content,
+    content: persistedUserContent,
   });
   if (insUserErr) {
     return Response.json(
@@ -135,7 +190,16 @@ export async function POST(req: NextRequest) {
       model: AI_PROVIDER.model,
       stream: true,
       thinking: { type: "disabled" },
-      messages: [{ role: "system", content: systemPrompt }, ...messages],
+      messages: [
+        { role: "system", content: systemPrompt },
+        ...messages.slice(0, -1),
+        {
+          role: "user",
+          content: imageDescription
+            ? `[The student attached an image. A vision model transcribed it as follows — treat this as ground truth for what is in the image:]\n\n${imageDescription}\n\n---\n\nStudent's message: ${lastMessage.content.trim() || "(no text — please answer based on the image content above)"}`
+            : lastMessage.content,
+        },
+      ],
     }),
   });
 
