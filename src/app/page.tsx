@@ -9,6 +9,21 @@ const FIELDS = [
   ['3D Modeling & Manufacturing', 'Integrating precision design with real-world production capabilities.'],
 ];
 
+const TOOLS: { href: string; title: string; body: string }[] = [
+  {
+    href: '/tutor',
+    title: 'STAR Labs Tutor',
+    body:
+      'An AI study partner with discipline-specific personalities for medicine, engineering, and business students. Ask questions, work through problems, and learn at your own pace.',
+  },
+  {
+    href: '/modeler',
+    title: 'STAR Labs Modeler',
+    body:
+      'Turn photos into 3D-printable objects — bookmarks, keychains, vases, and more — generated locally in your browser and downloadable as STL files.',
+  },
+];
+
 export default function Home() {
   return (
     <main className="min-h-screen bg-white text-black">
@@ -101,6 +116,44 @@ export default function Home() {
                 <h3 className="font-serif text-2xl text-black mb-3">{title}</h3>
                 <p className="text-neutral-600 text-sm leading-relaxed">{body}</p>
               </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="border-b border-neutral-200">
+        <div className="max-w-6xl mx-auto px-6 lg:px-10 py-20">
+          <div className="flex items-baseline justify-between mb-10">
+            <div>
+              <div className="font-mono text-[10px] uppercase tracking-[0.3em] text-[#0a1628] mb-4">
+                Our Tools
+              </div>
+              <h2 className="font-serif text-3xl lg:text-4xl text-black leading-tight">
+                Built in-house. Free to use.
+              </h2>
+            </div>
+            <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-neutral-500">
+              {TOOLS.length} live
+            </span>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-neutral-200">
+            {TOOLS.map((tool) => (
+              <Link
+                key={tool.href}
+                href={tool.href}
+                className="group bg-white p-8 hover:bg-neutral-50 transition-colors flex flex-col text-left"
+              >
+                <div className="flex items-start justify-between mb-5">
+                  <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-neutral-500">
+                    Tool
+                  </div>
+                  <span className="font-mono text-[10px] text-[#0a1628] opacity-0 group-hover:opacity-100 transition-opacity">
+                    →
+                  </span>
+                </div>
+                <h3 className="font-serif text-2xl text-black mb-3">{tool.title}</h3>
+                <p className="text-neutral-600 leading-relaxed text-sm flex-1">{tool.body}</p>
+              </Link>
             ))}
           </div>
         </div>
