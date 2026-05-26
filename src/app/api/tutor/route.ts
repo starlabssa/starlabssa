@@ -276,7 +276,7 @@ export async function POST(req: NextRequest) {
       "Content-Type": "text/event-stream; charset=utf-8",
       "Cache-Control": "no-cache, no-transform",
       Connection: "keep-alive",
-      "X-Conversation-Id": finalConversationId,
+      ...(finalConversationId ? { "X-Conversation-Id": finalConversationId } : {}),
       "Access-Control-Expose-Headers": "X-Conversation-Id",
     },
   });
